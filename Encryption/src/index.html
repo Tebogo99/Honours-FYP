@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>T-Drive - Encrypt/Decrypt Files</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class=container>
+    <div class="divTablefullwidth">
+      <div class="divTableBody">
+        <div class="divTableRow">
+          <div class="divTableCell" style="float: left;">
+            <h1 style="color: white;"><i>T-Drive - File Sharing System</i></h1>
+          </div>
+          <div class="divTableCell" style="float: right;">
+            <h1>
+            <button id="btnRefresh" onClick="javascript:location.reload();">Refresh Page</button>
+            <button id="btnDivEncrypt" onClick="javascript:switchdiv('encrypt');" style="background-color: rgb(243, 234, 243);">Encrypt File</button>
+            <button id="btnDivDecrypt" onClick="javascript:switchdiv('decrypt');" >Decrypt File</button>
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class=container>
+    <hr>
+  </div>
+
+  <div class="container" id=divEncryptfile>
+    <h2 style="color: white;"><i>Encrypt  File</i></h2>
+    <p style="color: white;"><i>To encrypt a file, enter a password and drop the file to be encrypted into the dropzone below.  The file will then be encrypted using the password, then you'll be given an opportunity to save the encrypted file to your system.</i></p>
+
+    <div class="divTable">
+      <div class="divTableBody">
+        <div class="divTableRow">
+          <!--<div class="divTableCell">Password</div>-->
+          <div class="input"><input id=txtEncpassphrase type=password placeholder="Password" size=30 onkeyup=javascript:encvalidate(); value=''></div>
+          <div class="divTableCell" style="color: red;">(minumum length: eight characters, make sure it is strong!)</div>
+        </div>
+        <div class="divTableRow">
+          <!--<div class="divTableCell">Password (retype)</div>-->
+          <div class="input"><input id=txtEncpassphraseretype type=password placeholder="Password (retype)" size=30 onkeyup=javascript:encvalidate(); value=''></div>
+          <div class="divTableCell"><span class=greenspan id=spnCheckretype></span></div>
+        </div>
+      </div>
+    </div>
+
+    <p> </p>
+
+    <div>
+      <div class=dropzone id="encdropzone" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
+        <p style="color: white;">Drag and drop the file to be encrypted into this dropzone, or click <a onclick=javascript:encfileElem.click();>here</a> to select file.</p>
+        <p><span id=spnencfilename></span></p>
+      </div>
+      <input type="file" id="encfileElem" style="display:none" onchange="selectfile(this.files)">
+    </div>
+
+    <p> </p>
+
+    <div class="divTable">
+      <div class="divTableBody">
+        <div class="divTableRow">
+          <div class="divTableCell"><button id=btnEncrypt onclick=javascript:encryptfile(); disabled style="color: white;">Encrypt File</button></div>
+          <div class="divTableCell"><span id=spnEncstatus></span></div>
+        </div>
+      </div>
+    </div>
+
+    <p> </p>
+
+    <div>
+      <a id=aEncsavefile hidden>
+        <!--<input type="file" id="inputFile">-->
+        <button style="color: white;">Save Encrypted File</button>
+      </a>
+    </div>
+  
+    <p> </p>
+  </div>
+
+  <div class="container" id=divDecryptfile>
+    <h2 style="color: white;"><i>Decrypt File</i></h2>
+    <p style="color: white;"> Decrypt a file using the password that was previously used to encrypt the file.  After the file is decrypted, you'll be given an opportunity to save the decrypted file to your system.</p>
+
+    <div class="divTable">
+      <div class="divTableBody">
+        <div class="divTableRow">
+          <!--<div class="divTableCell">Public key</div>-->
+          <!--<div class="divTableCell"><input id=txtDecpassphrase type=password size=30 onkeyup=javascript:decvalidate(); value=''></div> -->
+                      <div class="input"><input id=txtPubpassphrase type=password placeholder="Public key" size=30 onkeyup=javascript:decvalidate(); value=''></div>
+        </div>
+                  <div class="divTableRow">
+          <!--<div class="divTableCell">New Password</div>-->
+          <div class="input"><input id=txtDecpassphrase type=password placeholder="New Password" size=30 onkeyup=javascript:decvalidate(); value=''></div>
+                      <!--<div class="divTableCell"><input id=txtPubpassphrase type=password placeholder="Please enter public key" size=30 onkeyup=javascript:decvalidate(); value=''></div>-->
+        </div>
+                  <div class="divTableRow">
+          <!--<div class="divTableCell">New Password Retype</div>-->
+          <div class="input"><input id=txtDecpassphraseretype type=password placeholder="New Password (Retype)" size=30 onkeyup=javascript:decvalidate(); value=''></div>
+                      <!--<div class="divTableCell"><input id=txtPubpassphrase type=password placeholder="Please enter public key" size=30 onkeyup=javascript:decvalidate(); value=''></div>-->
+        </div>
+      </div>
+    </div>
+
+    <p> </p>
+
+    <div>
+        <div class=dropzone  id="decdropzone" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
+          <p style="color: white;">Drag and drop file to be decrypted into this dropzone, or click <a role=button onclick=javascript:decfileElem.click();>here</a> to select file.</p>
+          <p><span id=spndecfilename></span></p>
+        </div>
+        <input type="file" id="decfileElem" style="display:none" onchange="selectfile(this.files)">
+    </div>
+
+    <p> </p>
+
+    <div class="divTable">
+      <div class="divTableBody">
+        <div class="divTableRow">
+          <div class="divTableCell"><button id=btnDecrypt onclick=javascript:decryptfile(); disabled style="color: white;">Decrypt File</button></div>
+          <div class="divTableCell"><span id=spnDecstatus></span></div>
+        </div>
+      </div>
+    </div>
+
+    <p> </p>
+
+    <div>
+      <a id=aDecsavefile hidden><button style="color: white;">Save Decrypted File</button></a>
+    </div>
+  
+    <p> </p>
+  </div>
+
+  <div class="container">
+    <hr>
+    <h3 style="color: white;"><i>Usage</i></h3>
+    <p style="color: white;">
+    Use this web page to encrypt a file using a password, then use the same password later to decrypt the file.  
+    <p style="color: white;"><b style="color: red;">IMPORTANT:</b>  The same password that was used to encrypt the file must be used to decrypt the file later. If you loose or forget the password, it cannot be recovered!
+    </p>
+    </p>
+
+    <h3 style="color: white;"><i>Cryptography</i></h3>
+    <p style="color: white;">  
+    Files are encrypted using AES-CBC 256-bit symmetric encryption.  The encryption key is derived from the password and a random salt using PBKDF2 derivation with 10000 iterations of SHA256 hashing.
+    </p>	
+
+
+  </div>
+  <BR>
+</body>
+</html>
+<!--<script src="js/backendless.js"></script>
+<script type="text/javascript"> 
+
+document.addEventListener("DOMContentLoaded", () => initApp())
+function initApp ()
+{
+  const APP_ID = '7A56CE36-516B-703D-FF7F-EE112BA98200';
+  const API_KEY = 'E9D221DE-A7E2-4F3A-8457-F81F67F70878';
+
+  Backendless.serverURL = 'https://api.backendless.com';
+  Backendless.initApp(APP_ID, API_KEY);
+
+}
+</script>
+<script src="js/app.js"></script> -->
+<!-- onloadstart="javascript:initApp(); -->
+<script src="js/encryption.js" type="text/javascript"></script>
+</body>
+</html>
